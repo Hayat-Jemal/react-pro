@@ -3,14 +3,15 @@ import express from "express";
 import mongoose from "mongoose"; 
 import Messages from "./dbMessages.js"
 import Pusher  from "pusher";
+import cors from "cors";
 
-// // mongoose.set('strictQuery', true);
+
 
 //j6nLEHuitFwafjs4
 //6jv4s2V7ABHHCR1u
 // //app config
 const app = express() 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 9000
 
 const pusher = new Pusher({
     appId: "1529709",
@@ -23,9 +24,16 @@ const pusher = new Pusher({
 
 // //middleware
 app.use(express.json())
+app.use(cors())
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Header", "*");
+    next();
+});
 
-// //DB config
-//const connection_url = "mongodb+srv://admin:UM8lc2NLh9bathD6@cluster0.x3e9fac.mongodb.net/whatsappdb?retryWrites=true&w=majority";
+// //DB config      
+// const connection_url = 
+//"mongodb+srv://admin2:UM8lc2NLh9bathD6@cluster0.x3e9fac.mongodb.net/whatsappdb?retryWrites=true&w=majority";
 const connection_url = "mongodb+srv://admin:6jv4s2V7ABHHCR1u@cluster2.hxin00y.mongodb.net/whatsapp-backend?retryWrites=true&w=majority"
 mongoose.connect(connection_url,{
     useCreateIndex: true,
@@ -48,8 +56,10 @@ changeStream.on("change", (change) => {
         const messageDetails = change.fullDocument;
         pusher.trigger('messages', 'inserted',{
             name:messageDetails.user,
-            message: messageDetails.message
-        })
+            message: messageDetails.message,
+            timestamp: messageDetails.timestamp,
+            received: messageDetails.received
+        });
     } else {
         console.log('Error triggering pusher')
     }
