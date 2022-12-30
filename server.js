@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 // //DB config      
 // const connection_url = 
 //"mongodb+srv://admin2:UM8lc2NLh9bathD6@cluster0.x3e9fac.mongodb.net/whatsappdb?retryWrites=true&w=majority";
-const connection_url = "mongodb+srv://admin:6jv4s2V7ABHHCR1u@cluster2.hxin00y.mongodb.net/whatsapp-backend?retryWrites=true&w=majority"
+const connection_url = "mongodb+srv://admin:adminadmin@cluster0.o7igqiu.mongodb.net/?retryWrites=true&w=majority"
 mongoose.connect(connection_url,{
     useCreateIndex: true,
     useNewUrlParser: true,
